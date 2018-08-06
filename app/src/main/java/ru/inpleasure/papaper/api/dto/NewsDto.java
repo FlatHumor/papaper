@@ -12,7 +12,7 @@ public class NewsDto {
     @SerializedName("totalResults")
     @Expose
     private Integer totalResults;
-    @SerializedName("articleDtoList")
+    @SerializedName("articles")
     @Expose
     private List<ArticleDto> articleDtoList = null;
 
@@ -43,7 +43,7 @@ public class NewsDto {
     public class ArticleDto
     {
 
-        @SerializedName("sourceDto")
+        @SerializedName("source")
         @Expose
         private SourceDto sourceDto;
         @SerializedName("author")

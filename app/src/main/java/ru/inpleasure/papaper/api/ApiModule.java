@@ -14,20 +14,18 @@ public class ApiModule
 {
     private static final boolean ENABLE_LOG = true;
     private static final String BASE_API_URL = "https://newsapi.org/v2/";
+    private static final String EMPTY_API_URL = "";
 
     @Provides
     public IContract.IApi getApi()
     {
-        OkHttpClient client = new OkHttpClient();
-
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         if (ENABLE_LOG)
-        {
-            /*
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            client.interceptors().add(interceptor);
-            */
-        }
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(BASE_API_URL)

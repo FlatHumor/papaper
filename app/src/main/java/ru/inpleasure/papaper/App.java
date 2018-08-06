@@ -3,6 +3,7 @@ package ru.inpleasure.papaper;
 import android.app.Application;
 
 import ru.inpleasure.papaper.api.ApiModule;
+import ru.inpleasure.papaper.api.ImageLoaderModule;
 import ru.inpleasure.papaper.injector.AppComponent;
 import ru.inpleasure.papaper.injector.DaggerAppComponent;
 import ru.inpleasure.papaper.model.DatabaseHelperModule;
@@ -29,6 +30,8 @@ public class App extends Application
         return DaggerAppComponent.builder()
                 .apiModule(new ApiModule())
                 .modelModule(new ModelModule(this))
+                //.newsAdapterModule(new NewsAdapterModule(this))
+                .imageLoaderModule(new ImageLoaderModule())
                 .build();
     }
 }

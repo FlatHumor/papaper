@@ -1,5 +1,9 @@
 package ru.inpleasure.papaper;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
 import java.util.List;
 
 import retrofit2.http.GET;
@@ -31,21 +35,34 @@ public interface IContract
                 @Query("category") String category,
                 @Query("apiKey") String apiKey,
                 @Query("country") String country);
+
     }
 
     interface IModel
     {
         Observable<Article> getArticles();
-        void saveArticle(Article article);
+        Article getArticle(int id);
+        long putArticle(Article article);
+        Bitmap getArticleIllustration(int id);
+        void putArticleIllustration(int id, Bitmap bitmap);
+        void clearAll();
     }
 
     interface IView
     {
-
+        void showLoadingProgress();
+        void hideLoadingProgress();
+        void showArticle(Article article);
+        void clearArticles();
+        IContract.IPresenter getPresenter();
+        Context getContext();
     }
 
     interface IPresenter
     {
         void onCreate();
+        void onCategoryChanged(String category);
+        boolean findIllustration(int id, ImageView imageView);
+        void cacheIllustration(int id, Bitmap bitmap);
     }
 }
