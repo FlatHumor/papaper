@@ -23,7 +23,6 @@ import ru.inpleasure.papaper.model.dbo.Article;
 @Module
 public class ModelModule implements IContract.IModel
 {
-    private static final String CACHED_IMAGE_PREFIX = "cached_image_%s";
     private DatabaseHelperModule helper;
     private File cacheDirectory;
 
@@ -129,31 +128,6 @@ public class ModelModule implements IContract.IModel
         File[] cachedIllustrations = cacheDirectory.listFiles();
         for (File illustration : cachedIllustrations)
             illustration.delete();
-    }
-
-    @Override
-    public Bitmap getArticleIllustration(int id)
-    {
-        File cachedIllustration = new File(cacheDirectory, String.format(CACHED_IMAGE_PREFIX, id));
-        if (cachedIllustration.exists())
-            return BitmapFactory.decodeFile(cachedIllustration.getAbsolutePath());
-        return null;
-    }
-
-    @Override
-    public void putArticleIllustration(int id, Bitmap bitmap)
-    {
-        File articleIllustration = new File(cacheDirectory, String.format(CACHED_IMAGE_PREFIX, id));
-        try
-        {
-            FileOutputStream stream = new FileOutputStream(articleIllustration.getAbsolutePath());
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, stream);
-            stream.flush();
-            stream.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Provides

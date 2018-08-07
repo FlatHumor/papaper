@@ -2,8 +2,6 @@ package ru.inpleasure.papaper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import javax.inject.Inject;
-
-import dagger.Module;
-import dagger.Provides;
 import io.reactivex.Observable;
-import ru.inpleasure.papaper.api.ImageLoaderModule;
 import ru.inpleasure.papaper.model.dbo.Article;
-
 
 
 public class NewsAdapterModule extends BaseAdapter
@@ -33,16 +23,12 @@ public class NewsAdapterModule extends BaseAdapter
 {
     private List<Article> articles;
     private LayoutInflater inflater;
-    private IContract.IPresenter presenter;
 
-    @Inject
-    protected ImageLoaderModule imageLoader;
 
     public NewsAdapterModule(IContract.IView view) {
         articles = new ArrayList<>();
         inflater = (LayoutInflater)view.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        presenter = view.getPresenter();
         App.getComponent().inject(this);
     }
 
@@ -74,18 +60,14 @@ public class NewsAdapterModule extends BaseAdapter
         ((TextView)view.findViewById(R.id.list_item_article_published_at))
                 .setText(article.getFormattedPublishedAt());
         final ImageView articleIllustration = (ImageView)view.findViewById(R.id.list_item_article_image);
-        if (!presenter.findIllustration(article.getId(), articleIllustration)) {
-            try {
-                imageLoader.loadArticleIllustration(article.getUrlToImage())
-                        .subscribe(bitmap -> {
-                            articleIllustration.setImageBitmap(bitmap);
-                            presenter.cacheIllustration(article.getId(), bitmap);
-                        });
-            }
-            catch (Exception e) { }
-            System.out.print(String.valueOf(article.getId()) + " loaded from internet");
-        }
-        System.out.println(String.valueOf(position) + " builded");
+        Picasso.with(view.getContext())
+                .load(article.getUrlToImage())
+                .placeholder(R.drawable.mei_placeholder)
+                .error(R.drawable.mei_placeholder_error)
+                .centerCrop()
+                .fit()
+                .into(articleIllustration);
+
         return view;
     }
 
@@ -109,16 +91,7 @@ public class NewsAdapterModule extends BaseAdapter
     @Override
     public void clearAll() {
         articles.clear();
-    }
-
-    @Override
-    public Bitmap getArticleIllustration(int id) {
-        return null;
-    }
-
-    @Override
-    public void putArticleIllustration(int id, Bitmap bitmap) {
-
+        notifyDataSetChanged();
     }
 
     public NewsAdapterModule getNewsAdapterModule() {

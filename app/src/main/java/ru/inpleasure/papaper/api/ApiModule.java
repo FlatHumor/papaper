@@ -12,7 +12,7 @@ import ru.inpleasure.papaper.IContract;
 @Module
 public class ApiModule
 {
-    private static final boolean ENABLE_LOG = true;
+    private static final boolean ENABLE_LOG = false;
     private static final String BASE_API_URL = "https://newsapi.org/v2/";
     private static final String EMPTY_API_URL = "";
 

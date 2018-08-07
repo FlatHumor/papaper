@@ -43,8 +43,6 @@ public interface IContract
         Observable<Article> getArticles();
         Article getArticle(int id);
         long putArticle(Article article);
-        Bitmap getArticleIllustration(int id);
-        void putArticleIllustration(int id, Bitmap bitmap);
         void clearAll();
     }
 
@@ -62,7 +60,5 @@ public interface IContract
     {
         void onCreate();
         void onCategoryChanged(String category);
-        boolean findIllustration(int id, ImageView imageView);
-        void cacheIllustration(int id, Bitmap bitmap);
     }
 }

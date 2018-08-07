@@ -6,15 +6,13 @@ import dagger.Component;
 import ru.inpleasure.papaper.NewsActivity;
 import ru.inpleasure.papaper.NewsAdapterModule;
 import ru.inpleasure.papaper.api.ApiModule;
-import ru.inpleasure.papaper.api.ImageLoaderModule;
 import ru.inpleasure.papaper.model.ModelModule;
 import ru.inpleasure.papaper.presenter.ArticlePresenter;
 
 @Singleton
 @Component(modules = {
         ApiModule.class,
-        ModelModule.class,
-        ImageLoaderModule.class})
+        ModelModule.class})
 public interface AppComponent
 {
     void inject(ArticlePresenter presenter);

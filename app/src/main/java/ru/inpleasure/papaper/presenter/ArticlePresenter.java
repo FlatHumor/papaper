@@ -55,19 +55,4 @@ public class ArticlePresenter implements IContract.IPresenter
                     }
                 });
     }
-
-    @Override
-    public boolean findIllustration(int id, ImageView imageView)
-    {
-        Bitmap cachedIllustration = model.getArticleIllustration(id);
-        if (cachedIllustration != null)
-            imageView.setImageBitmap(cachedIllustration);
-        return cachedIllustration != null;
-    }
-
-    @Override
-    public void cacheIllustration(int id, Bitmap bitmap) {
-
-        model.putArticleIllustration(id, bitmap);
-    }
 }
