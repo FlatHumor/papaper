@@ -19,17 +19,18 @@ import ru.inpleasure.papaper.model.dbo.Article;
 
 
 public class NewsAdapterModule extends BaseAdapter
-    implements IContract.IModel
+    //implements IContract.IModel
 {
     private List<Article> articles;
     private LayoutInflater inflater;
+    private IContract.IPresenter presenter;
 
 
     public NewsAdapterModule(IContract.IView view) {
         articles = new ArrayList<>();
         inflater = (LayoutInflater)view.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        App.getComponent().inject(this);
+        presenter = view.getPresenter();
     }
 
     @Override
@@ -59,6 +60,10 @@ public class NewsAdapterModule extends BaseAdapter
                 .setText(article.getTitle());
         ((TextView)view.findViewById(R.id.list_item_article_published_at))
                 .setText(article.getFormattedPublishedAt());
+        ((TextView)view.findViewById(R.id.list_item_article_description))
+                .setText(article.getDescription());
+        ((ImageView)view.findViewById(R.id.list_item_article_save))
+                .setOnClickListener(v -> presenter.onClickSaveButton(article));
         final ImageView articleIllustration = (ImageView)view.findViewById(R.id.list_item_article_image);
         Picasso.with(view.getContext())
                 .load(article.getUrlToImage())
@@ -71,24 +76,24 @@ public class NewsAdapterModule extends BaseAdapter
         return view;
     }
 
-    @Override
+
     public Observable<Article> getArticles() {
         return Observable.fromIterable(articles);
     }
 
-    @Override
+
     public long putArticle(Article article) {
         articles.add(article);
         notifyDataSetChanged();
         return 0L;
     }
 
-    @Override
+
     public Article getArticle(int position) {
         return articles.get(position);
     }
 
-    @Override
+
     public void clearAll() {
         articles.clear();
         notifyDataSetChanged();

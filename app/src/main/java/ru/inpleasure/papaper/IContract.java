@@ -40,9 +40,10 @@ public interface IContract
 
     interface IModel
     {
-        Observable<Article> getArticles();
-        Article getArticle(int id);
-        long putArticle(Article article);
+        Observable<Article> getArticles(String tableName);
+        Article getArticle(int id, String tableName);
+        long putArticle(Article article, String tableName);
+        void removeArticle(int id, String tableName);
         void clearAll();
     }
 
@@ -60,5 +61,7 @@ public interface IContract
     {
         void onCreate();
         void onCategoryChanged(String category);
+        void onClickSaveButton(Article article);
+        void onClickShareButton(Article article);
     }
 }

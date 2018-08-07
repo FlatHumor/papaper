@@ -3,6 +3,7 @@ package ru.inpleasure.papaper.presenter;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -11,6 +12,8 @@ import io.reactivex.schedulers.Schedulers;
 import ru.inpleasure.papaper.App;
 import ru.inpleasure.papaper.IContract;
 import ru.inpleasure.papaper.api.dto.NewsDto;
+import ru.inpleasure.papaper.model.CacheDatabaseModule;
+import ru.inpleasure.papaper.model.CacheModel;
 import ru.inpleasure.papaper.model.dbo.Article;
 
 
@@ -48,11 +51,24 @@ public class ArticlePresenter implements IContract.IPresenter
                 .subscribeOn(Schedulers.io())
                 .subscribe(newsDto -> {
                     newsActivity.clearArticles();
+                    model.clearAll();
                     for (NewsDto.ArticleDto articleDto : newsDto.getArticleDtoList()) {
                         Article article = Article.createFromDto(articleDto);
-                        article.setId((int)model.putArticle(article));
+                        article.setId((int)model.putArticle(article, CacheModel.CACHE));
                         newsActivity.showArticle(article);
                     }
                 });
+    }
+
+    @Override
+    public void onClickSaveButton(Article article) {
+        model.putArticle(article, CacheModel.FAVORITE);
+        Toast.makeText(newsActivity.getContext(), "Статья добавлена в Избранное",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickShareButton(Article article) {
+
     }
 }

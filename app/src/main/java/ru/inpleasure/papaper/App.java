@@ -5,7 +5,9 @@ import android.app.Application;
 import ru.inpleasure.papaper.api.ApiModule;
 import ru.inpleasure.papaper.injector.AppComponent;
 import ru.inpleasure.papaper.injector.DaggerAppComponent;
-import ru.inpleasure.papaper.model.ModelModule;
+import ru.inpleasure.papaper.model.CacheDatabaseModule;
+import ru.inpleasure.papaper.model.CacheModel;
+import ru.inpleasure.papaper.model.FavoriteDatabaseModule;
 
 public class App extends Application
 {
@@ -27,7 +29,9 @@ public class App extends Application
     protected AppComponent buildComponent() {
         return DaggerAppComponent.builder()
                 .apiModule(new ApiModule())
-                .modelModule(new ModelModule(this))
+                .cacheModel(new CacheModel(this))
+                //.favoriteDatabaseModule(new FavoriteDatabaseModule(this))
+                //.cacheDatabaseModule(new CacheDatabaseModule(this))
                 .build();
     }
 }

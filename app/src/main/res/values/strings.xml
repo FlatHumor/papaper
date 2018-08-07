@@ -20,5 +20,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="t_list_item_article_title">Western US firefighters to face gusty winds, building heat as Carr Fire explodes to more than 145000 acres</string>
+    <string name="t_list_item_article_description">The museum dedicated to the First Amendment and freedom of the press sells T-shirts that tout \"You Are Very Fake News\" for $24.99 (though they are on sale now online for $19.97).</string>
     <string name="t_list_item_article_published_at">2018-08-05T10:01:23Z</string>
+    <string name="t_list_item_article_more">Подробнее</string>
 </resources>
