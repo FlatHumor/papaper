@@ -63,5 +63,7 @@ public interface IContract
         void onCategoryChanged(String category);
         void onClickSaveButton(Article article);
         void onClickShareButton(Article article);
+        void onClickLinkButton(Article article);
+        void onClickFavoriteButton();
     }
 }

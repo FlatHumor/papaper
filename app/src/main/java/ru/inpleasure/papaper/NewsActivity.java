@@ -50,6 +50,8 @@ public class NewsActivity extends AppCompatActivity implements
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        presenter.onCreate();
     }
 
     @Override
@@ -81,8 +83,8 @@ public class NewsActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
+    @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -107,6 +109,9 @@ public class NewsActivity extends AppCompatActivity implements
                 break;
             case R.id.menu_category_technology:
                 presenter.onCategoryChanged(ArticlePresenter.CATEGORY_TECHNOLOGY);
+                break;
+            case R.id.menu_item_favorite:
+                presenter.onClickFavoriteButton();
                 break;
                 default: break;
         }
