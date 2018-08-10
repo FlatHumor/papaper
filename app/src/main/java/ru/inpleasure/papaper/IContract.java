@@ -25,7 +25,7 @@ public interface IContract
                 @Query("country") String country);
 
         @GET("https://newsapi.org/v2/everything")
-        Observable<NewsDto>  getSerachResult(
+        Observable<NewsDto> getSearchResult(
                 @Query("q") String keyword,
                 @Query("apiKey") String apiKey,
                 @Query("language") String language);
@@ -63,7 +63,8 @@ public interface IContract
         void onCategoryChanged(String category);
         void onClickSaveButton(Article article);
         void onClickShareButton(Article article);
-        void onClickLinkButton(Article article);
         void onClickFavoriteButton();
+        void onClickMoreButton(String sourceUrl);
+        void onClickSearchButton(String searchText);
     }
 }

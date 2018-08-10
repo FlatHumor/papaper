@@ -64,8 +64,10 @@ public class NewsAdapterModule extends BaseAdapter
                 .setText(article.getDescription());
         ((ImageView)view.findViewById(R.id.list_item_article_save))
                 .setOnClickListener(v -> presenter.onClickSaveButton(article));
-        ((ImageView)view.findViewById(R.id.list_item_article_link))
-                .setOnClickListener(v -> presenter.onClickLinkButton(article));
+        ((ImageView)view.findViewById(R.id.list_item_article_share))
+                .setOnClickListener(v -> presenter.onClickShareButton(article));
+        ((TextView)view.findViewById(R.id.list_item_article_more))
+                .setOnClickListener(v -> presenter.onClickMoreButton(article.getUrl()));
         final ImageView articleIllustration = (ImageView)view.findViewById(R.id.list_item_article_image);
         Picasso.with(view.getContext())
                 .load(article.getUrlToImage())

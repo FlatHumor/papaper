@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import ru.inpleasure.papaper.model.dbo.Article;
@@ -50,6 +52,14 @@ public class NewsActivity extends AppCompatActivity implements
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        EditText headerSearchString = (EditText)headerView.findViewById(R.id.header_search_string);
+        headerView.findViewById(R.id.header_search_button).setOnClickListener(v -> {
+                presenter.onClickSearchButton(headerSearchString.getText().toString());
+                headerSearchString.setText("");
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }});
 
         presenter.onCreate();
     }

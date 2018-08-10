@@ -69,15 +69,6 @@
             android:scaleType="fitCenter"
             android:src="@drawable/share_button" />
 
-        <ImageView
-            android:id="@+id/list_item_article_link"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/link_button" />
-
         <TextView
             android:id="@+id/list_item_article_more"
             android:layout_width="match_parent"

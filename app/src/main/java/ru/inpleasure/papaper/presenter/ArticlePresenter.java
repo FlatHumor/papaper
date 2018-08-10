@@ -2,13 +2,8 @@ package ru.inpleasure.papaper.presenter;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -31,6 +26,8 @@ public class ArticlePresenter implements IContract.IPresenter
     public static final String CATEGORY_SPORTS = "sports";
     public static final String CATEGORY_TECHNOLOGY = "technology";
 
+    public static final String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
+
     private static final String TOKEN = "00";
 
     private IContract.IView newsActivity;
@@ -51,7 +48,6 @@ public class ArticlePresenter implements IContract.IPresenter
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(newsActivity::showArticle);
-        model.clearAll();
     }
 
     @Override
@@ -80,28 +76,6 @@ public class ArticlePresenter implements IContract.IPresenter
 
     @Override
     public void onClickShareButton(Article article) {
-        new Thread(() -> {
-            try {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                Picasso.with(newsActivity.getContext())
-                        .load(article.getUrlToImage())
-                        .resize(500, 500)
-                        .get().compress(Bitmap.CompressFormat.JPEG, 70, stream);
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_STREAM, stream.toByteArray());
-                newsActivity.getContext().startActivity(intent);
-                stream.flush();
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    @Override
-    public void onClickLinkButton(Article article) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -117,5 +91,32 @@ public class ArticlePresenter implements IContract.IPresenter
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(newsActivity::showArticle);
+    }
+
+    @Override
+    public void onClickMoreButton(String sourceUrl) {
+        Uri uri = Uri.parse(sourceUrl);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        newsActivity.getContext().startActivity(intent);
+
+        /*
+        Intent intent = new Intent(newsActivity.getContext(), ArticleActivity.class);
+        intent.putExtra(EXTRA_ARTICLE_URL, sourceUrl);
+        newsActivity.getContext().startActivity(intent);
+        */
+    }
+
+    @Override
+    @SuppressLint("CheckResult")
+    public void onClickSearchButton(String searchText)
+    {
+        api.getSearchResult(searchText, TOKEN, "ru")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(newsDto -> {
+                    newsActivity.clearArticles();
+                    for (NewsDto.ArticleDto articleDto : newsDto.getArticleDtoList())
+                        newsActivity.showArticle(Article.createFromDto(articleDto));
+                });
     }
 }
